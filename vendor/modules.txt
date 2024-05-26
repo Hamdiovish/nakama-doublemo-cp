@@ -101,7 +101,7 @@ github.com/dop251/goja/ftoa/internal/fast
 github.com/dop251/goja/parser
 github.com/dop251/goja/token
 github.com/dop251/goja/unistring
-# github.com/doublemo/nakama-cluster v1.0.2
+# github.com/doublemo/nakama-cluster v1.0.3
 ## explicit; go 1.18
 github.com/doublemo/nakama-cluster
 github.com/doublemo/nakama-cluster/api

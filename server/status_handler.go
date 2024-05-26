@@ -47,9 +47,11 @@ func NewLocalStatusHandler(logger *zap.Logger, sessionRegistry SessionRegistry, 
 }
 
 func (s *LocalStatusHandler) GetStatus(ctx context.Context) ([]*console.StatusList_Status, error) {
-	return []*console.StatusList_Status{
-		{
-			Name:           s.node,
+	var statuses []*console.StatusList_Status
+
+	for _, node := range CC().client.GetNodesIds() {
+		status := &console.StatusList_Status{
+			Name:           node,
 			Health:         console.StatusHealth_STATUS_HEALTH_OK,
 			SessionCount:   int32(s.sessionRegistry.Count()),
 			PresenceCount:  int32(s.tracker.Count()),
@@ -59,6 +61,9 @@ func (s *LocalStatusHandler) GetStatus(ctx context.Context) ([]*console.StatusLi
 			AvgRateSec:     s.metrics.SnapshotRateSec(),
 			AvgInputKbs:    s.metrics.SnapshotRecvKbSec(),
 			AvgOutputKbs:   s.metrics.SnapshotSentKbSec(),
-		},
-	}, nil
+		}
+		statuses = append(statuses, status)
+	}
+
+	return statuses, nil
 }

@@ -4,12 +4,14 @@ go 1.19
 
 replace github.com/heroiclabs/nakama-common v1.25.1-0.20221124142234-d30d90a403a0 => github.com/doublemo/nakama-common v1.0.1
 
+//replace github.com/doublemo/nakama-cluster v1.0.3 => github.com/hamdiovish/nakama-cluster v1.0.4
+
 require (
 	github.com/blugelabs/bluge v0.2.2
 	github.com/blugelabs/bluge_segment_api v0.2.0
 	github.com/blugelabs/query_string v0.3.0
 	github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91
-	github.com/doublemo/nakama-cluster v1.0.2
+	github.com/doublemo/nakama-cluster v1.0.3
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/gorilla/handlers v1.5.1
