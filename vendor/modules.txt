@@ -101,11 +101,15 @@ github.com/dop251/goja/ftoa/internal/fast
 github.com/dop251/goja/parser
 github.com/dop251/goja/token
 github.com/dop251/goja/unistring
-# github.com/doublemo/nakama-cluster v1.0.3
-## explicit; go 1.18
+# github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec
+## explicit; go 1.20
 github.com/doublemo/nakama-cluster
 github.com/doublemo/nakama-cluster/api
+github.com/doublemo/nakama-cluster/endpoint
 github.com/doublemo/nakama-cluster/sd
+github.com/doublemo/nakama-cluster/sd/etcdv3
+github.com/doublemo/nakama-cluster/sd/internal/instance
+github.com/doublemo/nakama-cluster/sd/lb
 # github.com/felixge/httpsnoop v1.0.1
 ## explicit; go 1.13
 github.com/felixge/httpsnoop
@@ -283,7 +287,6 @@ github.com/rubenv/sql-migrate/sqlparse
 github.com/sean-/seed
 # github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b
 ## explicit
-github.com/serialx/hashring
 # github.com/shimingyah/pool v1.0.0
 ## explicit; go 1.12
 github.com/shimingyah/pool

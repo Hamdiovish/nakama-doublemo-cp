@@ -49,21 +49,21 @@ func NewLocalStatusHandler(logger *zap.Logger, sessionRegistry SessionRegistry, 
 func (s *LocalStatusHandler) GetStatus(ctx context.Context) ([]*console.StatusList_Status, error) {
 	var statuses []*console.StatusList_Status
 
-	for _, node := range CC().client.GetNodesIds() {
-		status := &console.StatusList_Status{
-			Name:           node,
-			Health:         console.StatusHealth_STATUS_HEALTH_OK,
-			SessionCount:   int32(s.sessionRegistry.Count()),
-			PresenceCount:  int32(s.tracker.Count()),
-			MatchCount:     int32(s.matchRegistry.Count()),
-			GoroutineCount: int32(runtime.NumGoroutine()),
-			AvgLatencyMs:   s.metrics.SnapshotLatencyMs(),
-			AvgRateSec:     s.metrics.SnapshotRateSec(),
-			AvgInputKbs:    s.metrics.SnapshotRecvKbSec(),
-			AvgOutputKbs:   s.metrics.SnapshotSentKbSec(),
-		}
-		statuses = append(statuses, status)
+	//for _, node := range CC().client.GetNodesIds() {
+	status := &console.StatusList_Status{
+		Name:           "node",
+		Health:         console.StatusHealth_STATUS_HEALTH_OK,
+		SessionCount:   int32(s.sessionRegistry.Count()),
+		PresenceCount:  int32(s.tracker.Count()),
+		MatchCount:     int32(s.matchRegistry.Count()),
+		GoroutineCount: int32(runtime.NumGoroutine()),
+		AvgLatencyMs:   s.metrics.SnapshotLatencyMs(),
+		AvgRateSec:     s.metrics.SnapshotRateSec(),
+		AvgInputKbs:    s.metrics.SnapshotRecvKbSec(),
+		AvgOutputKbs:   s.metrics.SnapshotSentKbSec(),
 	}
+	statuses = append(statuses, status)
+	//}
 
 	return statuses, nil
 }

@@ -98,7 +98,7 @@ func (p *LocalPartyRegistry) Leave(id uuid.UUID, presences []*Presence) {
 
 func (p *LocalPartyRegistry) PartyJoinRequest(ctx context.Context, id uuid.UUID, node string, presence *Presence) (bool, error) {
 	if node != p.node {
-		return CC().PartyJoinRequest(ctx, id, node, presence)
+		//return CC().PartyJoinRequest(ctx, id, node, presence)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -111,7 +111,7 @@ func (p *LocalPartyRegistry) PartyJoinRequest(ctx context.Context, id uuid.UUID,
 
 func (p *LocalPartyRegistry) PartyPromote(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string, presence *rtapi.UserPresence) error {
 	if node != p.node {
-		return CC().PartyPromote(ctx, id, node, sessionID, fromNode, presence)
+		//return CC().PartyPromote(ctx, id, node, sessionID, fromNode, presence)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -124,7 +124,7 @@ func (p *LocalPartyRegistry) PartyPromote(ctx context.Context, id uuid.UUID, nod
 
 func (p *LocalPartyRegistry) PartyAccept(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string, presence *rtapi.UserPresence) error {
 	if node != p.node {
-		return CC().PartyAccept(ctx, id, node, sessionID, fromNode, presence)
+		//return CC().PartyAccept(ctx, id, node, sessionID, fromNode, presence)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -137,7 +137,7 @@ func (p *LocalPartyRegistry) PartyAccept(ctx context.Context, id uuid.UUID, node
 
 func (p *LocalPartyRegistry) PartyRemove(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string, presence *rtapi.UserPresence) error {
 	if node != p.node {
-		return CC().PartyPromote(ctx, id, node, sessionID, fromNode, presence)
+		//return CC().PartyPromote(ctx, id, node, sessionID, fromNode, presence)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -150,7 +150,7 @@ func (p *LocalPartyRegistry) PartyRemove(ctx context.Context, id uuid.UUID, node
 
 func (p *LocalPartyRegistry) PartyClose(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string) error {
 	if node != p.node {
-		return CC().PartyClose(ctx, id, node, sessionID, fromNode)
+		//return CC().PartyClose(ctx, id, node, sessionID, fromNode)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -163,7 +163,7 @@ func (p *LocalPartyRegistry) PartyClose(ctx context.Context, id uuid.UUID, node,
 
 func (p *LocalPartyRegistry) PartyJoinRequestList(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string) ([]*rtapi.UserPresence, error) {
 	if node != p.node {
-		return CC().PartyJoinRequestList(ctx, id, node, sessionID, fromNode)
+		//return CC().PartyJoinRequestList(ctx, id, node, sessionID, fromNode)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -176,7 +176,7 @@ func (p *LocalPartyRegistry) PartyJoinRequestList(ctx context.Context, id uuid.U
 
 func (p *LocalPartyRegistry) PartyMatchmakerAdd(ctx context.Context, id uuid.UUID, node, sessionID, fromNode, query string, minCount, maxCount, countMultiple int, stringProperties map[string]string, numericProperties map[string]float64) (string, []*PresenceID, error) {
 	if node != p.node {
-		return CC().PartyMatchmakerAdd(ctx, id, node, sessionID, fromNode, query, minCount, maxCount, countMultiple, stringProperties, numericProperties)
+		//return CC().PartyMatchmakerAdd(ctx, id, node, sessionID, fromNode, query, minCount, maxCount, countMultiple, stringProperties, numericProperties)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -189,7 +189,7 @@ func (p *LocalPartyRegistry) PartyMatchmakerAdd(ctx context.Context, id uuid.UUI
 
 func (p *LocalPartyRegistry) PartyMatchmakerRemove(ctx context.Context, id uuid.UUID, node, sessionID, fromNode, ticket string) error {
 	if node != p.node {
-		return CC().PartyMatchmakerRemove(ctx, id, node, sessionID, fromNode, ticket)
+		//return CC().PartyMatchmakerRemove(ctx, id, node, sessionID, fromNode, ticket)
 	}
 
 	ph, found := p.parties.Load(id)
@@ -202,7 +202,7 @@ func (p *LocalPartyRegistry) PartyMatchmakerRemove(ctx context.Context, id uuid.
 
 func (p *LocalPartyRegistry) PartyDataSend(ctx context.Context, id uuid.UUID, node, sessionID, fromNode string, opCode int64, data []byte) error {
 	if node != p.node {
-		return CC().PartyDataSend(ctx, id, node, sessionID, fromNode, opCode, data)
+		//return CC().PartyDataSend(ctx, id, node, sessionID, fromNode, opCode, data)
 	}
 
 	ph, found := p.parties.Load(id)

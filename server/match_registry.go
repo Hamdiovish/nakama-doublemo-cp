@@ -694,9 +694,9 @@ func (r *LocalMatchRegistry) Count() int {
 }
 
 func (r *LocalMatchRegistry) JoinAttempt(ctx context.Context, id uuid.UUID, node string, userID, sessionID uuid.UUID, username string, sessionExpiry int64, vars map[string]string, clientIP, clientPort, fromNode string, metadata map[string]string) (bool, bool, bool, string, string, []*MatchPresence) {
-	if node != r.node {
-		return CC().MatchJoinAttempt(ctx, id, node, userID, sessionID, username, sessionExpiry, vars, clientIP, clientPort, fromNode, metadata)
-	}
+	// if node != r.node {
+	// 	return CC().MatchJoinAttempt(ctx, id, node, userID, sessionID, username, sessionExpiry, vars, clientIP, clientPort, fromNode, metadata)
+	// }
 
 	mh, ok := r.matches.Load(id)
 	if !ok {
@@ -759,7 +759,7 @@ func (r *LocalMatchRegistry) Kick(stream PresenceStream, presences []*MatchPrese
 
 func (r *LocalMatchRegistry) SendData(id uuid.UUID, node string, userID, sessionID uuid.UUID, username, fromNode string, opCode int64, data []byte, reliable bool, receiveTime int64) {
 	if node != r.node {
-		CC().MatchSendData(r.ctx, id, node, userID, sessionID, username, fromNode, opCode, data, reliable, receiveTime)
+		//CC().MatchSendData(r.ctx, id, node, userID, sessionID, username, fromNode, opCode, data, reliable, receiveTime)
 		return
 	}
 

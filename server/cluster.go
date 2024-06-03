@@ -2,14 +2,18 @@ package server
 
 import (
 	"context"
+	"encoding/binary"
+	"math/rand"
 	"strconv"
 	"sync"
 	"time"
 
 	nakamacluster "github.com/doublemo/nakama-cluster"
 	ncapi "github.com/doublemo/nakama-cluster/api"
-	"github.com/doublemo/nakama-cluster/sd"
+	"github.com/doublemo/nakama-cluster/endpoint"
+	etcdv3 "github.com/doublemo/nakama-cluster/sd/etcdv3"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/proto"
 )
 
 type ClusterServer struct {
@@ -35,17 +39,17 @@ func CC() *ClusterServer {
 func StartClusterServer(ctx context.Context, logger *zap.Logger, config Config) *ClusterServer {
 	logger.Info("Initializing cluster")
 	clusterConfig := config.GetCluster()
-	options := sd.EtcdClientOptions{
+	options := etcdv3.ClientOptions{
 		Cert:          clusterConfig.Etcd.Cert,
 		Key:           clusterConfig.Etcd.Key,
 		CACert:        clusterConfig.Etcd.CACert,
-		DialTimeout:   time.Duration(clusterConfig.Etcd.DialTimeout) * time.Second,
-		DialKeepAlive: time.Duration(clusterConfig.Etcd.DialKeepAlive) * time.Second,
+		DialTimeout:   time.Duration(clusterConfig.Etcd.DialTimeout),
+		DialKeepAlive: time.Duration(clusterConfig.Etcd.DialKeepAlive),
 		Username:      clusterConfig.Etcd.Username,
 		Password:      clusterConfig.Etcd.Password,
 	}
 
-	sdClient, err := sd.NewEtcdV3Client(context.Background(), clusterConfig.Etcd.Endpoints, options)
+	sdClient, err := etcdv3.NewClient(context.Background(), clusterConfig.Etcd.Endpoints, options)
 	if err != nil {
 		logger.Fatal("Failed initializing etcd", zap.Error(err))
 	}
@@ -70,7 +74,7 @@ func StartClusterServer(ctx context.Context, logger *zap.Logger, config Config) 
 	return s
 }
 
-func (s *ClusterServer) NotifyAlive(node *nakamacluster.Meta) error {
+func (s *ClusterServer) NotifyAlive(node endpoint.Endpoint) error {
 	return nil
 }
 
@@ -80,70 +84,88 @@ func (s *ClusterServer) LocalState(join bool) []byte {
 
 func (s *ClusterServer) MergeRemoteState(buf []byte, join bool) {}
 
-func (s *ClusterServer) NotifyJoin(node *nakamacluster.Meta) {}
+func (s *ClusterServer) NotifyJoin(node endpoint.Endpoint) {}
 
-func (s *ClusterServer) NotifyLeave(node *nakamacluster.Meta) {}
+func (s *ClusterServer) NotifyLeave(node endpoint.Endpoint) {}
 
-func (s *ClusterServer) NotifyUpdate(node *nakamacluster.Meta) {}
+func (s *ClusterServer) NotifyUpdate(node endpoint.Endpoint) {}
 
-func (s *ClusterServer) NotifyMsg(node string, msg *ncapi.Envelope) (*ncapi.Envelope, error) {
-	switch msg.Payload.(type) {
-	case *ncapi.Envelope_Message:
-		s.onMessage(node, msg)
+func (s *ClusterServer) NotifyMsg(node string, msg []byte) []byte {
+	// Check the payload type using a switch statement
+	//switch msg.Payload.(type) {
+	// case *ncapi.Envelope_Message:
+	// 	s.onMessage(node, msg)
 
-	case *ncapi.Envelope_SessionNew:
-		s.onSessionUp(node, msg)
+	// case *ncapi.Envelope_SessionNew:
+	// 	s.onSessionUp(node, msg)
 
-	case *ncapi.Envelope_SessionClose:
-		s.onSessionDown(node, msg)
+	// case *ncapi.Envelope_SessionClose:
+	// 	s.onSessionDown(node, msg)
 
-	case *ncapi.Envelope_Track:
-		s.onTrack(node, msg)
+	//case *ncapi.Message_Envelope:
+	//	s.onTrack(node, msg.)
 
-	case *ncapi.Envelope_Untrack:
-		s.onUntrack(node, msg)
-
-	case *ncapi.Envelope_UntrackAll:
-		s.onUntrackAll(node, msg)
-
-	case *ncapi.Envelope_UntrackByMode:
-		s.onUntrackByMode(node, msg)
-
-	case *ncapi.Envelope_UntrackByStream:
-		s.onUntrackByStream(node, msg)
-
-	case *ncapi.Envelope_Bytes:
-		return s.onBytes(node, msg)
-
+	var message ncapi.Message_Track
+	if err := proto.Unmarshal(msg, &message); err != nil {
+		s.logger.Warn("NotifyMsg parse failed", zap.Error(err))
+	} else {
+		s.logger.Error("message: ", zap.Any("Payload", message.Presences))
+		s.onTrack(node, message)
 	}
-	return nil, nil
+
+	// var untrack_message ncapi.Message_Untrack
+	// if err := proto.Unmarshal(msg, &untrack_message); err != nil {
+	// 	s.logger.Warn("NotifyMsg parse failed", zap.Error(err))
+	// } else {
+	// 	s.onUntrack(node, untrack_message)
+	// }
+
+	// case *ncapi.Envelope_Untrack:
+	// 	s.onUntrack(node, msg)
+
+	// case *ncapi.Envelope_UntrackAll:
+	// 	s.onUntrackAll(node, msg)
+
+	// case *ncapi.Envelope_UntrackByMode:
+	// 	s.onUntrackByMode(node, msg)
+
+	// case *ncapi.Envelope_UntrackByStream:
+	// 	s.onUntrackByStream(node, msg)
+
+	// case *ncapi.Envelope_Bytes:
+	// 	return s.onBytes(node, msg)
+
+	//}
+	return nil
 }
 
 // Send 使用TCP发送信息
-func (s *ClusterServer) SendAndRecv(ctx context.Context, msg *ncapi.Envelope, to ...string) ([]*ncapi.Envelope, error) {
-	return s.client.Send(nakamacluster.NewMessageWithReply(ctx, msg, to...))
+func (s *ClusterServer) SendAndRecv(msg *ncapi.Envelope, to ...string) ([][]byte, error) {
+	data := make([]byte, 32)
+	binary.BigEndian.PutUint32(data, rand.Uint32())
+	return s.client.Send(nakamacluster.NewMessage(msg.GetBytes(), to...))
 }
 
 func (s *ClusterServer) Send(msg *ncapi.Envelope, to ...string) error {
-	_, err := s.client.Send(nakamacluster.NewMessage(msg), to...)
+	_, err := s.client.Send(nakamacluster.NewMessage(msg.GetBytes()), to...)
 	return err
 }
 
 func (s *ClusterServer) Broadcast(msg *ncapi.Envelope) error {
-	return s.client.Broadcast(nakamacluster.NewMessage(msg))
+	return s.client.Broadcast(nakamacluster.NewMessage(msg.GetBytes()))
 }
 
-func (s *ClusterServer) RPCCall(ctx context.Context, name, key, cid string, vars map[string]string, in []byte) ([]byte, error) {
-	return s.client.RPCCall(ctx, name, key, cid, vars, in)
-}
+// func (s *ClusterServer) RPCCall(ctx context.Context, name, key, cid string, vars map[string]string, in []byte) ([]byte, error) {
+// 	return s.client.RPCCall(ctx, name, key, cid, vars, in)
+// }
 
 func (s *ClusterServer) NodeId() string {
 	return s.client.GetLocalNode().Name
 }
 
-func (s *ClusterServer) NodeStatus() nakamacluster.MetaStatus {
-	return s.client.GetMeta().Status
-}
+// func (s *ClusterServer) NodeStatus() nakamacluster.MetaStatus {
+// 	return s.client.GetMeta().Status
+// }
 
 func (s *ClusterServer) Stop() {
 	s.once.Do(func() {

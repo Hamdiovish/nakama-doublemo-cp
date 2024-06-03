@@ -24,7 +24,6 @@ import (
 	"github.com/heroiclabs/nakama-common/runtime"
 	"go.uber.org/atomic"
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -177,7 +176,7 @@ func (r *LocalSessionRegistry) SingleSession(ctx context.Context, tracker Tracke
 		}
 
 		// todo kill remote session
-		messageBytes, _ := proto.Marshal(message)
-		CC().NotifySessionDown(foundSessionID.ID.SessionID, foundSessionID.UserID, runtime.PresenceReasonDisconnect, messageBytes)
+		//messageBytes, _ := proto.Marshal(message)
+		//CC().NotifySessionDown(foundSessionID.ID.SessionID, foundSessionID.UserID, runtime.PresenceReasonDisconnect, messageBytes)
 	}
 }

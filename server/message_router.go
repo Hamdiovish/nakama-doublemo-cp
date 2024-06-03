@@ -15,7 +15,6 @@
 package server
 
 import (
-	ncapi "github.com/doublemo/nakama-cluster/api"
 	"github.com/heroiclabs/nakama-common/rtapi"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -112,13 +111,13 @@ func (r *LocalMessageRouter) SendToPresenceIDs(logger *zap.Logger, presenceIDs [
 		return
 	}
 
-	bytes, _ := proto.Marshal(envelope)
-	for node, sessions := range remoteSessions {
-		err := CC().Send(&ncapi.Envelope{Payload: &ncapi.Envelope_Message{Message: &ncapi.Message{SessionID: sessions, Content: bytes}}}, node)
-		if err != nil {
-			logger.Error("Failed to route message", zap.String("node", node), zap.Any("sid", sessions), zap.Error(err))
-		}
-	}
+	// bytes, _ := proto.Marshal(envelope)
+	// for node, sessions := range remoteSessions {
+	// 	err := CC().Send(&ncapi.Envelope{Payload: &ncapi.Envelope_Message{Message: &ncapi.Message{SessionID: sessions, Content: bytes}}}, node)
+	// 	if err != nil {
+	// 		logger.Error("Failed to route message", zap.String("node", node), zap.Any("sid", sessions), zap.Error(err))
+	// 	}
+	// }
 }
 
 func (r *LocalMessageRouter) SendToStream(logger *zap.Logger, stream PresenceStream, envelope *rtapi.Envelope, reliable bool) {

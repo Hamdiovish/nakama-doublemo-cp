@@ -320,6 +320,8 @@ func (t *LocalTracker) Track(ctx context.Context, sessionID uuid.UUID, stream Pr
 
 	if err := CC().NotifyTrack(p); err != nil {
 		t.logger.Error("Failed to notify track", zap.Error(err))
+	} else {
+		t.logger.Info("Success to notify track")
 	}
 
 	return true, true

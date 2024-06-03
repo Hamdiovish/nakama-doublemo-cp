@@ -22,7 +22,6 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/gorilla/websocket"
-	nkruntime "github.com/heroiclabs/nakama-common/runtime"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/encoding/protojson"
 )
@@ -131,7 +130,7 @@ func NewSocketWsAcceptor(logger *zap.Logger, config Config, sessionRegistry Sess
 			go sessionRegistry.SingleSession(session.Context(), tracker, userID, sessionID)
 		}
 
-		err = CC().NotifySessionUp(sessionID, userID, username, format, true)
+		//err = CC().NotifySessionUp(sessionID, userID, username, format, true)
 		if err != nil {
 			logger.Warn("Could not notify to session up", zap.Error(err))
 		}
@@ -139,7 +138,7 @@ func NewSocketWsAcceptor(logger *zap.Logger, config Config, sessionRegistry Sess
 		// Allow the server to begin processing incoming messages from this session.
 		session.Consume()
 
-		err = CC().NotifySessionDown(sessionID, userID, nkruntime.PresenceReasonDisconnect)
+		//err = CC().NotifySessionDown(sessionID, userID, nkruntime.PresenceReasonDisconnect)
 		if err != nil {
 			logger.Warn("Could not notify to session up", zap.Error(err))
 		}

@@ -23,11 +23,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/heroiclabs/nakama/v3/internal/satori"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/heroiclabs/nakama/v3/internal/satori"
 
 	"github.com/gofrs/uuid"
 	"github.com/heroiclabs/nakama-common/api"
@@ -4012,7 +4013,8 @@ func (n *RuntimeGoNakamaModule) ChannelIdBuild(ctx context.Context, senderId, ta
 // @return body([]byte) data.
 // @return error(error) An optional error value if an error occurred.
 func (n *RuntimeGoNakamaModule) CCRPCCall(ctx context.Context, name, key, cid string, vars map[string]string, in []byte) ([]byte, error) {
-	return CC().RPCCall(ctx, name, key, cid, vars, in)
+	//return CC().RPCCall(ctx, name, key, cid, vars, in)
+	return nil, nil
 }
 
 // @group authenticate

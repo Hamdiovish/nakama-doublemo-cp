@@ -8,18 +8,19 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/heroiclabs/nakama-common/runtime"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/proto"
 )
 
 func (s *ClusterServer) NotifyTrack(presences ...*Presence) error {
-	track := ncapi.Track{Presences: make([]*ncapi.Presence, len(presences))}
+	track := &ncapi.Message_Track{Presences: make([]*ncapi.Message_Presence, len(presences))}
 
 	for i, presence := range presences {
-		track.Presences[i] = &ncapi.Presence{
-			Id: &ncapi.PresenceID{
+		track.Presences[i] = &ncapi.Message_Presence{
+			Id: &ncapi.Message_PresenceID{
 				Node:      presence.GetNodeId(),
 				SessionID: presence.GetSessionId(),
 			},
-			Stream: &ncapi.PresenceStream{
+			Stream: &ncapi.Message_PresenceStream{
 				Mode:       int32(presence.Stream.Mode),
 				Subject:    presence.Stream.Subject.String(),
 				Subcontext: presence.Stream.Subcontext.String(),
@@ -27,30 +28,36 @@ func (s *ClusterServer) NotifyTrack(presences ...*Presence) error {
 			},
 
 			UserID: presence.GetUserId(),
-			Meta: &ncapi.PresenceMeta{
-				SessionFormat: int32(presence.Meta.Format),
-				Hidden:        presence.Meta.Hidden,
-				Persistence:   presence.Meta.Persistence,
-				Username:      presence.Meta.Username,
-				Status:        presence.Meta.Status,
-				Reason:        int32(presence.Meta.Reason),
+			Meta: &ncapi.Message_PresenceMeta{
+				Format:      int32(presence.Meta.Format),
+				Hidden:      presence.Meta.Hidden,
+				Persistence: presence.Meta.Persistence,
+				Username:    presence.Meta.Username,
+				Status:      presence.Meta.Status,
+				Reason:      uint32(presence.Meta.Reason),
 			},
 		}
 	}
 
-	return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Envelope_Track{Track: &track}})
+	// Serialize Track message to bytes
+	payloadBytes, _ := proto.Marshal(track)
+
+	return s.Broadcast(&ncapi.Envelope{
+		Payload: &ncapi.Envelope_Bytes{Bytes: payloadBytes},
+		Cid:     ncapi.Message_TRACK,
+	})
 }
 
 func (s *ClusterServer) NotifyUntrack(presences ...*Presence) error {
-	untrack := ncapi.Untrack{Presences: make([]*ncapi.Presence, len(presences))}
+	untrack := &ncapi.Message_Untrack{Presences: make([]*ncapi.Message_Presence, len(presences))}
 
 	for i, presence := range presences {
-		untrack.Presences[i] = &ncapi.Presence{
-			Id: &ncapi.PresenceID{
+		untrack.Presences[i] = &ncapi.Message_Presence{
+			Id: &ncapi.Message_PresenceID{
 				Node:      presence.GetNodeId(),
 				SessionID: presence.GetSessionId(),
 			},
-			Stream: &ncapi.PresenceStream{
+			Stream: &ncapi.Message_PresenceStream{
 				Mode:       int32(presence.Stream.Mode),
 				Subject:    presence.Stream.Subject.String(),
 				Subcontext: presence.Stream.Subcontext.String(),
@@ -58,31 +65,36 @@ func (s *ClusterServer) NotifyUntrack(presences ...*Presence) error {
 			},
 
 			UserID: presence.GetUserId(),
-			Meta: &ncapi.PresenceMeta{
-				SessionFormat: int32(presence.Meta.Format),
-				Hidden:        presence.Meta.Hidden,
-				Persistence:   presence.Meta.Persistence,
-				Username:      presence.Meta.Username,
-				Status:        presence.Meta.Status,
-				Reason:        int32(presence.Meta.Reason),
+			Meta: &ncapi.Message_PresenceMeta{
+				Format:      int32(presence.Meta.Format),
+				Hidden:      presence.Meta.Hidden,
+				Persistence: presence.Meta.Persistence,
+				Username:    presence.Meta.Username,
+				Status:      presence.Meta.Status,
+				Reason:      uint32(presence.Meta.Reason),
 			},
 		}
 	}
+	payloadBytes, _ := proto.Marshal(untrack)
 
-	return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Envelope_Untrack{Untrack: &untrack}})
+	return s.Broadcast(&ncapi.Envelope{
+		Payload: &ncapi.Envelope_Bytes{Bytes: payloadBytes},
+		Cid:     ncapi.Message_UNTRACK,
+	})
 }
 
 func (s *ClusterServer) NotifyUntrackAll(sessionID uuid.UUID, reason runtime.PresenceReason) error {
-	untrackAll := ncapi.UntrackAll{SessionID: sessionID.String(), Reason: int32(reason)}
+	//untrackAll := ncapi.Message_UntrackAll{SessionID: sessionID.String(), Reason: int32(reason)}
 
-	return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Envelope_UntrackAll{UntrackAll: &untrackAll}})
+	// return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Message_UntrackAll{UntrackAll: &untrackAll}})
+	return nil
 }
 
 func (s *ClusterServer) NotifyUntrackByMode(sessionID uuid.UUID, modes map[uint8]struct{}, skipStream PresenceStream) error {
-	untrack := ncapi.UntrackByMode{
+	untrack := ncapi.Message_UntrackByMode{
 		SessionID: sessionID.String(),
 		Modes:     make([]int32, len(modes)),
-		SkipStream: &ncapi.PresenceStream{
+		SkipStream: &ncapi.Message_PresenceStream{
 			Mode:       int32(skipStream.Mode),
 			Subject:    skipStream.Subject.String(),
 			Subcontext: skipStream.Subcontext.String(),
@@ -96,14 +108,15 @@ func (s *ClusterServer) NotifyUntrackByMode(sessionID uuid.UUID, modes map[uint8
 		i++
 	}
 
-	return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Envelope_UntrackByMode{UntrackByMode: &untrack}})
+	//return s.Broadcast(&ncapi.Message_Envelope{Payload: &ncapi.Message_Envelope_UntrackByMode{UntrackByMode: &untrack}})
+	return nil
 }
 
 func (s *ClusterServer) NotifyUntrackByStream(streams ...PresenceStream) error {
-	untrack := ncapi.UntrackByStream{Streams: make([]*ncapi.PresenceStream, len(streams))}
+	untrack := ncapi.Message_UntrackByStream{Streams: make([]*ncapi.Message_PresenceStream, len(streams))}
 
 	for i, stream := range streams {
-		untrack.Streams[i] = &ncapi.PresenceStream{
+		untrack.Streams[i] = &ncapi.Message_PresenceStream{
 			Mode:       int32(stream.Mode),
 			Subject:    stream.Subject.String(),
 			Subcontext: stream.Subcontext.String(),
@@ -111,14 +124,14 @@ func (s *ClusterServer) NotifyUntrackByStream(streams ...PresenceStream) error {
 		}
 	}
 
-	return s.Broadcast(&ncapi.Envelope{Payload: &ncapi.Envelope_UntrackByStream{UntrackByStream: &untrack}})
+	//return s.Broadcast(&ncapi.Message_Envelope{Payload: &ncapi.Message_Envelope_UntrackByStream{UntrackByStream: &untrack}})
+	return nil
 }
 
-func (s *ClusterServer) onTrack(node string, msg *ncapi.Envelope) {
+func (s *ClusterServer) onTrack(node string, msg ncapi.Message_Track) {
 	s.logger.Debug("onTrack", zap.String("node", node))
-	message := msg.GetTrack()
-	for _, presence := range message.Presences {
-		if presence.Meta.Reason == int32(runtime.PresenceReasonUpdate) {
+	for _, presence := range msg.GetPresences() {
+		if presence.Meta.Reason == uint32(runtime.PresenceReasonUpdate) {
 			s.tracker.UpdateFromNode(s.ctx,
 				presence.Id.Node,
 				uuid.FromStringOrNil(presence.Id.SessionID),
@@ -130,7 +143,7 @@ func (s *ClusterServer) onTrack(node string, msg *ncapi.Envelope) {
 				},
 				uuid.FromStringOrNil(presence.UserID),
 				PresenceMeta{
-					Format:      SessionFormat(presence.Meta.SessionFormat),
+					Format:      SessionFormat(presence.Meta.Format),
 					Hidden:      presence.Meta.Hidden,
 					Persistence: presence.Meta.Persistence,
 					Username:    presence.Meta.Username,
@@ -151,7 +164,7 @@ func (s *ClusterServer) onTrack(node string, msg *ncapi.Envelope) {
 			},
 			uuid.FromStringOrNil(presence.UserID),
 			PresenceMeta{
-				Format:      SessionFormat(presence.Meta.SessionFormat),
+				Format:      SessionFormat(presence.Meta.Format),
 				Hidden:      presence.Meta.Hidden,
 				Persistence: presence.Meta.Persistence,
 				Username:    presence.Meta.Username,
@@ -161,10 +174,10 @@ func (s *ClusterServer) onTrack(node string, msg *ncapi.Envelope) {
 	}
 }
 
-func (s *ClusterServer) onUntrack(node string, msg *ncapi.Envelope) {
+func (s *ClusterServer) onUntrack(node string, msg ncapi.Message_Untrack) {
 	s.logger.Debug("onUntrack", zap.String("node", node))
-	message := msg.GetUntrack()
-	for _, presence := range message.Presences {
+
+	for _, presence := range msg.Presences {
 		s.tracker.UntrackFromNode(presence.Id.Node, uuid.FromStringOrNil(presence.Id.SessionID),
 			PresenceStream{
 				Mode:       uint8(presence.Stream.Mode),
@@ -176,15 +189,25 @@ func (s *ClusterServer) onUntrack(node string, msg *ncapi.Envelope) {
 	}
 }
 
-func (s *ClusterServer) onUntrackAll(node string, msg *ncapi.Envelope) {
+func (s *ClusterServer) onUntrackAll(node string, msg *ncapi.Message_Envelope) {
 	s.logger.Debug("onUntrackAll", zap.String("node", node))
-	message := msg.GetUntrackAll()
+	var message ncapi.Message_UntrackAll
+	if err := proto.Unmarshal(msg.GetMessage(), &message); err != nil {
+		s.logger.Warn("NotifyMsg parse failed", zap.Error(err))
+		return
+	}
+
 	s.tracker.UntrackAllFromNode(node, uuid.FromStringOrNil(message.SessionID), runtime.PresenceReason(message.Reason))
 }
 
-func (s *ClusterServer) onUntrackByMode(node string, msg *ncapi.Envelope) {
+func (s *ClusterServer) onUntrackByMode(node string, msg *ncapi.Message_Envelope) {
 	s.logger.Debug("onUntrackByMode", zap.String("node", node))
-	message := msg.GetUntrackByMode()
+	var message ncapi.Message_UntrackByMode
+	if err := proto.Unmarshal(msg.GetMessage(), &message); err != nil {
+		s.logger.Warn("NotifyMsg parse failed", zap.Error(err))
+		return
+	}
+
 	modes := make(map[uint8]struct{})
 	for _, mode := range message.Modes {
 		modes[uint8(mode)] = struct{}{}
@@ -198,9 +221,14 @@ func (s *ClusterServer) onUntrackByMode(node string, msg *ncapi.Envelope) {
 	})
 }
 
-func (s *ClusterServer) onUntrackByStream(node string, msg *ncapi.Envelope) {
+func (s *ClusterServer) onUntrackByStream(node string, msg *ncapi.Message_Envelope) {
 	s.logger.Debug("onUntrackByStream", zap.String("node", node))
-	message := msg.GetUntrackByStream()
+	var message ncapi.Message_UntrackByStream
+	if err := proto.Unmarshal(msg.GetMessage(), &message); err != nil {
+		s.logger.Warn("NotifyMsg parse failed", zap.Error(err))
+		return
+	}
+
 	for _, stream := range message.Streams {
 		s.tracker.UntrackByStreamFromNode(node, PresenceStream{
 			Mode:       uint8(stream.Mode),

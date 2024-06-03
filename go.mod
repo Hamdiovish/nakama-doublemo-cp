@@ -11,7 +11,7 @@ require (
 	github.com/blugelabs/bluge_segment_api v0.2.0
 	github.com/blugelabs/query_string v0.3.0
 	github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91
-	github.com/doublemo/nakama-cluster v1.0.3
+	github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/gorilla/handlers v1.5.1
