@@ -153,10 +153,6 @@ github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91 h1:1PfaQuGdeJVnHHQ0tg0
 github.com/dop251/goja v0.0.0-20221003171542-5ea1285e6c91/go.mod h1:yRkwfj0CBpOGre+TwBsqPV0IH0Pk73e4PXJOeNDboGs=
 github.com/dop251/goja_nodejs v0.0.0-20210225215109-d91c329300e7/go.mod h1:hn7BA7c8pLvoGndExHudxTDKZ84Pyvv+90pbBjbTz0Y=
 github.com/dop251/goja_nodejs v0.0.0-20211022123610-8dd9abb0616d/go.mod h1:DngW8aVqWbuLRMHItjPUyqdj+HWPvnQe8V8y1nDpIbM=
-github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec h1:SvxWAMSoI9b0vSsy5LAxVNgD0XXTvHzBB7abZn/QaDc=
-github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec/go.mod h1:bpJb9FP1sgpIlqkHdg8EoDsRUFUQil0TUAMiDvLzh3w=
-github.com/doublemo/nakama-cluster v1.0.3 h1:WFY1SY+1BuIfgX4FL8vLMwV8xAGpRS7d2iY3UkLKo3I=
-github.com/doublemo/nakama-cluster v1.0.3/go.mod h1:blKsmPzXEgPxO1e5sj+39csOLRZ+3jyv/LEaSkITCio=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
@@ -293,6 +289,8 @@ github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0/go.mod h1:8NvIoxWQoOIhqOTXgf
 github.com/grpc-ecosystem/grpc-gateway v1.16.0/go.mod h1:BDjrQk3hbvj6Nolgz8mAMFbcEtjT1g+wF4CSlocrBnw=
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3 h1:lLT7ZLSzGLI08vc9cpd+tYmNWjdKDqyr/2L+f6U12Fk=
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3/go.mod h1:o//XUCC/F+yRGJoPO/VU0GSB0f8Nhgmxx0VIRUvaC0w=
+github.com/hamdiovish/nakama-cluster v1.0.4 h1:XaFQd/RSV7hcpOEHX8ipAxnxUWNMkDz94F67GuC+SHY=
+github.com/hamdiovish/nakama-cluster v1.0.4/go.mod h1:bpJb9FP1sgpIlqkHdg8EoDsRUFUQil0TUAMiDvLzh3w=
 github.com/hashicorp/consul/api v1.1.0/go.mod h1:VmuI/Lkw1nC05EYQWNKwWGbkg+FbDBtguAZLlVdkD9Q=
 github.com/hashicorp/consul/sdk v0.1.1/go.mod h1:VKf9jXwCTEY1QZP2MOLRhb5i/I/ssyNV1vwHyQBF0x8=
 github.com/hashicorp/errwrap v1.0.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
@@ -541,8 +539,6 @@ github.com/ryanuber/columnize v2.1.0+incompatible/go.mod h1:sm1tb6uqfes/u+d4ooFo
 github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdhQKdks0=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 h1:nn5Wsu0esKSJiIVhscUtVbo7ada43DJhG55ua/hjS5I=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b h1:h+3JX2VoWTFuyQEo87pStk/a99dzIO1mM9KxIyLPGTU=
-github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b/go.mod h1:/yeG0My1xr/u+HZrFQ1tOQQQQrOawfyMUH13ai5brBc=
 github.com/shimingyah/pool v1.0.0 h1:KzH9NduUcadVF0u1hWCsxts5xcg+vhnUedMstzEQ8xY=
 github.com/shimingyah/pool v1.0.0/go.mod h1:JnWMDP+mGg5NNH/L3ifTiloAAxcRfv/ZDQJX/YL0FmE=
 github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24/go.mod h1:M+9NzErvs504Cn4c5DxATwIqPbtswREoFCre64PpcG4=

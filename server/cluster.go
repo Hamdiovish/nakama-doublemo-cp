@@ -12,6 +12,7 @@ import (
 	ncapi "github.com/doublemo/nakama-cluster/api"
 	"github.com/doublemo/nakama-cluster/endpoint"
 	etcdv3 "github.com/doublemo/nakama-cluster/sd/etcdv3"
+	"github.com/hashicorp/memberlist"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/proto"
 )
@@ -194,4 +195,18 @@ func (s *ClusterServer) SetPartyRegistry(partyRegistry PartyRegistry) {
 
 func (s *ClusterServer) SetMatchRegistry(matchRegistry MatchRegistry) {
 	s.matchRegistry = matchRegistry
+}
+
+// Method to get nodes from the nodes map
+func (s *ClusterServer) GetNodes() []*memberlist.Node {
+
+	// Create a slice to hold the nodes
+	nodes := make([]*memberlist.Node, 0, len(s.client.GetNodes()))
+
+	// Iterate over the map and collect the nodes
+	for _, node := range nodes {
+		nodes = append(nodes, node)
+	}
+
+	return nodes
 }

@@ -101,7 +101,7 @@ github.com/dop251/goja/ftoa/internal/fast
 github.com/dop251/goja/parser
 github.com/dop251/goja/token
 github.com/dop251/goja/unistring
-# github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec
+# github.com/doublemo/nakama-cluster v0.0.0-20230717094838-2492eaab25ec => github.com/hamdiovish/nakama-cluster v1.0.4
 ## explicit; go 1.20
 github.com/doublemo/nakama-cluster
 github.com/doublemo/nakama-cluster/api
@@ -285,8 +285,6 @@ github.com/rubenv/sql-migrate/sqlparse
 # github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529
 ## explicit
 github.com/sean-/seed
-# github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b
-## explicit
 # github.com/shimingyah/pool v1.0.0
 ## explicit; go 1.12
 github.com/shimingyah/pool
@@ -542,3 +540,4 @@ gopkg.in/natefinch/lumberjack.v2
 ## explicit
 gopkg.in/yaml.v3
 # github.com/heroiclabs/nakama-common v1.25.1-0.20221124142234-d30d90a403a0 => github.com/doublemo/nakama-common v1.0.1
+# github.com/doublemo/nakama-cluster => github.com/hamdiovish/nakama-cluster v1.0.4

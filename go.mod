@@ -4,7 +4,7 @@ go 1.19
 
 replace github.com/heroiclabs/nakama-common v1.25.1-0.20221124142234-d30d90a403a0 => github.com/doublemo/nakama-common v1.0.1
 
-//replace github.com/doublemo/nakama-cluster v1.0.3 => github.com/hamdiovish/nakama-cluster v1.0.4
+replace github.com/doublemo/nakama-cluster => github.com/hamdiovish/nakama-cluster v1.0.4
 
 require (
 	github.com/blugelabs/bluge v0.2.2
@@ -18,6 +18,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
+	github.com/hashicorp/memberlist v0.5.0
 	github.com/heroiclabs/nakama-common v1.26.1-0.20230321170403-7becee7153cf
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
@@ -75,7 +76,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-sockaddr v1.0.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
-	github.com/hashicorp/memberlist v0.5.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -92,7 +92,6 @@ require (
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 // indirect
-	github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b // indirect
 	github.com/shimingyah/pool v1.0.0 // indirect
 	github.com/twmb/murmur3 v1.1.6 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.6 // indirect

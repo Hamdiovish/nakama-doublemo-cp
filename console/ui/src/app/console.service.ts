@@ -386,6 +386,10 @@ export interface UserListUser {
 	username?:string
 }
 
+/** - USER_ROLE_ADMIN: All access
+ - USER_ROLE_DEVELOPER: Best for developers, also enables APIs and API explorer
+ - USER_ROLE_MAINTAINER: Best for users who regularly update player information.
+ - USER_ROLE_READONLY: Read-only role for those only need to view data */
 export enum UserRole {
   USER_ROLE_UNKNOWN = 0,
   USER_ROLE_ADMIN = 1,
@@ -501,7 +505,7 @@ export interface ApiChannelMessageList {
 
 /** A friend of a user. */
 export interface ApiFriend {
-  // The friend status.
+  // The friend status. /  / one of "Friend.State".
 	state?:number
   // Time of the latest relationship update.
 	update_time?:string

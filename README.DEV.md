@@ -56,6 +56,6 @@
 
 > ./nakama --name nakama20 --logger.level debug --database.address postgres:localdb@localhost:5432/nakama --session.token_expiry_sec 7200 -socket.port 7360  -console.port 7361 -cluster.server.gossip_bindport 7362 -cluster.etcd.endpoints localhost:2379
 
-> ./nakama --name nakama10 --logger.level debug --database.address postgres:localdb@localhost:5432/nakama --session.token_expiry_sec 7200 -socket.port 7350  -console.port 7351 -cluster.server.gossip_bindport 7352 -cluster.etcd.endpoints localhost:2379 -runtime.path /home/alphalab/Downloads/nakama-godot-demo-master/nakama/modules -cluster.server.gossip_bindaddr 192.168.1.102
+> ./nakama --name nakama10 --logger.level debug --database.address postgres:localdb@localhost:5432/nakama --session.token_expiry_sec 7200 -socket.port 7350  -console.port 7351 -cluster.server.gossip_bindport 7352 -cluster.etcd.endpoints localhost:2379 -runtime.path /home/alphalab/Downloads/nakama-godot-demo-master/nakama/modules -cluster.server.gossip_bindaddr 0.0.0.0
 
-> ./nakama --name nakama20 --logger.level debug --database.address postgres:localdb@localhost:5432/nakama --session.token_expiry_sec 7200 -socket.port 7360  -console.port 7361 -cluster.server.gossip_bindport 7362 -cluster.etcd.endpoints localhost:2379 -runtime.path /home/alphalab/Downloads/nakama-godot-demo-master/nakama/modules -cluster.server.gossip_bindaddr 192.168.1.102
+> ./nakama --name nakama20 --logger.level debug --database.address postgres:localdb@localhost:5432/nakama --session.token_expiry_sec 7200 -socket.port 7360  -console.port 7361 -cluster.server.gossip_bindport 7362 -cluster.etcd.endpoints localhost:2379 -runtime.path /home/alphalab/Downloads/nakama-godot-demo-master/nakama/modules -cluster.server.gossip_bindaddr 0.0.0.0
